@@ -30,13 +30,21 @@ class GarminClient:
       try:
          garth.client.username
       except Exception:
-        logger.warning("Garmin is not logging in or the token has expired.")
         if self.auth_domain and str(self.auth_domain).upper() == "CN":
           self.garthClient.configure(domain="garmin.cn")
-        self.garthClient.login(self.email, self.password)
-        
-        # del self.garthClient.sess.headers['User-Agent']
-        del self.garthClient.client.sess.headers['User-Agent']
+        tokens = os.getenv("GARMIN_TOKENS")
+        if tokens:
+          # Reuse a pre-generated session token (created from a trusted IP).
+          # Avoids Garmin's 429 SSO rate-limiting on datacenter (GitHub Actions) IPs.
+          logger.warning("Loading Garmin session from GARMIN_TOKENS secret.")
+          self.garthClient.client.loads(tokens)
+        else:
+          logger.warning("Garmin is not logging in or the token has expired.")
+          self.garthClient.login(self.email, self.password)
+        try:
+          del self.garthClient.client.sess.headers['User-Agent']
+        except Exception:
+          pass
 
       return func(self, *args, **kwargs)
     return ware
