@@ -1,23 +1,22 @@
 name: coros-sync-garmin
 
 on:
-  workflow_dispatch:
+  workflow_dispatch:        # manual "Run workflow" button (web + GitHub mobile app)
   schedule:
-    - cron: '0 0,7,20 * * ?'
+    - cron: '*/30 * * * *'  # automatic safety-net poll every 30 min (UTC); GitHub runs are best-effort
 env:
-  GITHUB_NAME: XiaoSiHwang
-  GITHUB_EMAIL: 1009326507@qq.com
-  ## 佳明配置
+  GITHUB_NAME: ianjwhitmore
+  GITHUB_EMAIL: ianjwhitmore@users.noreply.github.com
+  ## Garmin config
   GARMIN_AUTH_DOMAIN: ${{ secrets.GARMIN_AUTH_DOMAIN }}
   GARMIN_EMAIL: ${{ secrets.GARMIN_EMAIL }}
   GARMIN_PASSWORD: ${{ secrets.GARMIN_PASSWORD }}
 
-  ## Coros配置
+  ## Coros config
   COROS_EMAIL: ${{ secrets.COROS_EMAIL }}
   COROS_PASSWORD: ${{ secrets.COROS_PASSWORD }}
-  ### 按需选择，如果选择 garmin_to_coros 佳明同步高驰
-  ### 如果选择 coros_to_garmin 高驰同步佳明
-  RUN_TYPE: coros_to_garmin # garmin_to_coros 佳明同步高驰、 coros_to_garmin
+  ### coros_to_garmin = sync Coros activities INTO Garmin
+  RUN_TYPE: coros_to_garmin
 
 jobs:
   build:
