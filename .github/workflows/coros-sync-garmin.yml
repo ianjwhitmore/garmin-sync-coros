@@ -11,6 +11,7 @@ env:
   GARMIN_AUTH_DOMAIN: ${{ secrets.GARMIN_AUTH_DOMAIN }}
   GARMIN_EMAIL: ${{ secrets.GARMIN_EMAIL }}
   GARMIN_PASSWORD: ${{ secrets.GARMIN_PASSWORD }}
+  GARMIN_TOKENS: ${{ secrets.GARMIN_TOKENS }}   # pre-generated session token (preferred over password)
 
   ## Coros config
   COROS_EMAIL: ${{ secrets.COROS_EMAIL }}
